@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>雷电</title>
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+  <link rel="stylesheet" href="../js/flexible/flexible.css">
+  <link rel="stylesheet" href="game.css">
+  <script src="../js/flexible/flexible.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mescroll.js@1.4.1/mescroll.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mescroll.js@1.4.1/mescroll.min.js" charset="utf-8"></script>
+  <!--<script src="js/jquery/jquery.js"></script>-->
+  <!--<script src="../js/zepto/category.js"></script>-->
+  <script src="../js/zepto/common.js"></script>
+  <script src="../js/zepto/zepto.min.js"></script>
+  <script src="../js/velocity/velocity.min.js"></script>
+  <script src="../js/velocity/velocity.ui.min.js"></script>
+  <script src="../js/util/uiutils.js"></script>
+  <script src="playerPlaneFire.js"></script>
+  <script src="againstPlane.js"></script>
+  <script src="../js/vconsole/vconsole.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #background {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      overflow: hidden;
+    }
+
+    .player {
+      z-index: 1;
+      position: absolute;
+      left: 288px;
+      width: 57.6px;
+      height: 43.2px;
+    }
+
+    #playerBullet {
+      width: 10.8px;
+      position: absolute;
+      z-index: 1;
+    }
+
+    #playerBulletContainer {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: absolute;
+    }
+
+    .againstBulletContainer {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: absolute;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    #warPlane {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+      height: 100%;
+    }
+    .improveWeapon {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+        position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+      top: 4px;
+      border-width: 0px;
+    }
+    .bubbleContainer{
+      width: 48px;
+      height:48px;
+      overflow: hidden;
+      border-radius: 24px;
+      border-width: 0px;
+      position:absolute;
+      transition-property: all;
+      z-index: -1;
+
+    }
+    .bubble{
+      width: 70px;
+      height:70px;
+      border-radius: 35px;
+      border-width: 0px;
+      position: absolute;
+      left: -10px;
+      top: -11px;
+    }
+
+  </style>
+</head>
+<body id="body">
+<img id="background" src="../img/back1_1.png">
+<div id="playerBulletContainer"></div>
+<img src="../img/blue_plane.png" class="player">
+<div id="againstPlaneContainer">
+
+</div>
+<div class="againstBulletContainer"></div>
+<div class="bulletBubbleContainer bubbleContainer">
+  <img src="../img/improveBullet.png" class = 'improveBullet improveWeapon'>
+  <img class="bulletBubble bubble" src="../img/bubble.png">
+</div>
+<div class="missileBubbleContainer bubbleContainer">
+  <img src="../img/improveMissile.png" class = 'improveMissile improveWeapon'>
+  <img class="missileBubble bubble" src="../img/bubble.png">
+</div>
+<script>
+
+  var vConsole = new VConsole()
+  var playerParams = [0,0]
+  var x = 0
+  var y = 0
+  var z = 0
+  var screenWidth = document.documentElement.clientWidth;
+  var screenHeight = document.documentElement.clientHeight;
+  var nowX = 0
+  var nowY = 0
+  var nowZ = 0
+  $(".player").css({
+    top: screenHeight - screenHeight / 6,
+    left: screenWidth / 2 - parseFloat($(".player").css('width')) / 2
+  })
+
+
+  var xRate = 7 / (screenWidth)
+  var posLeft = screenWidth / 2 - parseFloat($(".player").css('width')) / 2
+  var tempPosLeft = posLeft
+  var tempTimeMills = (new Date()).getTime()
+  var enabled = true
+  var yRate = 5 / screenHeight
+  var posTop = $(".player").offset().top;
+  var tempPosTop = posTop
+  var playerBulletIndex = 0
+  var playerBulletCenterLeftTop = -parseFloat($(".player").css('height'))
+  var playerBulletCenterRightTop = -parseFloat($(".player").css('height'))
+  var playerBulletLeftLeftTop = -parseFloat($(".player").css('height'))
+  var playerBulletLeftRightTop = -parseFloat($(".player").css('height'))
+  var playerBulletRightLeftTop = -parseFloat($(".player").css('height'))
+  var playerBulletRightRightTop = -parseFloat($(".player").css('height'))
+  var playerBulletsTop = [playerBulletCenterLeftTop, playerBulletCenterRightTop,playerBulletLeftLeftTop,playerBulletLeftRightTop,playerBulletRightLeftTop,playerBulletRightRightTop,0,1]//数组后两个数其实不是高度，是导弹等级与子弹等级。名字起的不好。
+  var playerBulletsLeft = [0,0,-parseFloat($(".player").css('width')),-parseFloat($(".player").css('width')),screenWidth+parseFloat($(".player").css('width')),screenWidth+parseFloat($(".player").css('width'))]
+  var smallPlaneLife = 50
+  var smallPlaneNumbers = 1
+  var beingAttackAgainstSmallPlanes = ['', '','','','','']
+
+  //  window.addEventListener("devicemotion", deviceMotionHandler, false)
+  // 绑定deviceorientation事件和处理程序
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', DeviceOrientationHandler, false);
+  } else {
+    alert("您的设备不支持该游戏");
+  }
+
+  playerFire();
+
+
+  startOccurPlane()
+
+
+  function DeviceOrientationHandler(event) {
+    var alpha = event.alpha, beta = event.beta, gamma = event.gamma;
+    if (alpha != null || beta != null || gamma != null) {
+      //各个方向旋转的值
+      //alert("alpha:" + alpha + "<br />beta:" + beta + "<br />gamma:" + gamma)
+      //判断屏幕方向
+      nowY = beta
+      nowX = gamma
+      move()
+    }
+  }
+  function move() {
+    var newPosLeft = posLeft;
+    var offsetLeft = -nowX * 40
+    newPosLeft = ((screenWidth - parseFloat($(".player").css('width'))) / 60) * (nowX + 30)
+//    newPosLeft = nowX*10+screenWidth/2-36
+    if (newPosLeft < 1) {
+      newPosLeft = 1
+    }
+    if (newPosLeft > screenWidth - parseFloat($(".player").css('width'))) {
+      newPosLeft = screenWidth - parseFloat($(".player").css('width'))
+    }
+    var newPosTop = posTop;
+//    var offsetTop = nowY * 130;
+    var offsetTop = nowY * (screenHeight / 45);
+    newPosTop = offsetTop;
+    if (newPosTop > screenHeight - parseFloat($(".player").css('height'))) {
+      newPosTop = screenHeight - parseFloat($(".player").css('height'))
+    } else if (newPosTop < 0) {
+      newPosTop = 0
+    }
+    if (enabled) {
+      enabled = false;
+      $(".player").velocity({
+        "left": Math.abs(tempPosLeft - newPosLeft) < 2 ? tempPosLeft : newPosLeft,
+        "top": Math.abs(tempPosTop - newPosTop) < 2 ? tempPosTop : newPosTop
+      }, 80, function () {
+        enabled = true
+        tempPosLeft = newPosLeft
+        tempPosTop = newPosTop
+      })
+//      $(".player").animate({
+//        "left": Math.abs(tempPosLeft - newPosLeft) < 2 ? tempPosLeft : newPosLeft,
+//        "top": Math.abs(tempPosTop - newPosTop) < 2 ? tempPosTop : newPosTop
+//      }, 80, 'linear', function () {
+//        enabled = true
+//        tempPosLeft = newPosLeft
+//        tempPosTop = newPosTop
+//      })
+    } else {
+//      tempPosLeft = newPosLeft
+//      tempPosTop = newPosTop
+    }
+
+//    var playerLifeCalculator = new Object()
+//    playerLifeCalculator.tag = "playerParams"
+//    playerParams[0] = tempPosLeft
+//    playerParams[1] = tempPosTop
+//    playerLifeCalculator.playerParams = playerParams
+//    oW.postMessage(playerLifeCalculator)
+//    oW.onmessage = function (ev) {
+//    }
+//    alertMsg(nowY)
+  }
+</script>
+</body>
+</html>

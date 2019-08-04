@@ -1,0 +1,296 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+  <link rel="stylesheet" href="js/flexible/flexible.css">
+  <link rel="stylesheet" href="game.css">
+  <script src="js/flexible/flexible.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mescroll.js@1.4.1/mescroll.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mescroll.js@1.4.1/mescroll.min.js" charset="utf-8"></script>
+  <script src="js/jquery/jquery.js"></script>
+  <script src="js/util/uiutils.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      flex-direction: column;
+      width: 100%;
+      position: relative;
+    }
+
+    #first_page_bg {
+      width: 100%;
+      margin-right: 0;
+      left: 0;
+      right: 0;
+      background: url("images/tim_bg_1.jpg") no-repeat 50% 50%;
+      background-size: cover;
+    }
+
+    .first_page_header {
+      position: relative;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background-size: cover;
+      flex-wrap: wrap;
+      height: 1.5rem;
+      align-items: center;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .header_tim_logo {
+      float: left;
+      margin-left: 1.8rem;
+      margin-top: 0.3rem;
+      height: 0.9rem;
+      margin-right: 0.8rem;
+      display: inline-block;
+    }
+
+    .header_button {
+      display: inline-block;
+      height: 1.5rem;
+      width: 1.5rem;
+      text-align: center;
+      line-height: 1.6rem;
+      font-size: 0.4rem;
+      color: black;
+      margin-right: 0.3rem;
+      font-weight: 300;
+      text-shadow: 0 1px 0 black, 0 0 5px black;
+      float: left;
+    }
+
+    .header_button:hover {
+      background-color: deepskyblue;
+      text-decoration: none;
+    }
+
+    .header_online_number {
+      height: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      float: right;
+      display: flex;
+      padding-right: 1.1rem;
+    }
+
+    #header_online_number {
+      overflow: hidden;
+      font-weight: 300;
+      text-shadow: 0 1px 0 black, 0 0 5px black;
+      font-size: 0.3rem;
+      display: inline-block;
+    }
+
+    .register_button {
+      float: left;
+      background-color: cornflowerblue;
+      width: 1.8rem;
+      margin-left: 0.2rem;
+      height: 0.7rem;
+      color: white;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 0.7rem;
+      font-size: 0.3rem;
+      border-radius: 0.7rem;
+      margin-right: 0.6rem;
+    }
+
+    .register_button:hover {
+      text-decoration: none;
+    }
+
+    #header_online_number a:nth-child(1), #header_online_number a:nth-child(2) {
+      margin-right: 0.3rem;
+    }
+
+    #header_online_number a {
+      color: black;
+      text-decoration: none;
+      text-shadow: 0 1px 0 black, 0 0 5px black;
+
+    }
+
+    #header_online_number div:nth-child(2) {
+      margin-top: 0.1rem;
+      text-shadow: 0 1px 0 black, 0 0 5px black;
+
+    }
+
+    .register_button_container {
+      height: 100%;
+      display: flex;
+      float: right;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .first_page_body {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .tim_logo {
+      width: 5rem;
+      margin-top: -0.1rem;
+    }
+
+    .download_immediately {
+      width: 6rem;
+      height: 1.4rem;
+      background-color: dodgerblue;
+      color: white;
+      text-align: center;
+      line-height: 1.4rem;
+      font-size: 0.6rem;
+      border-radius: 0.7rem;
+      margin-top: 0.5rem;
+    }
+
+    .download_immediately:hover {
+      text-decoration: none;
+    }
+
+    .first_page_introduce {
+      width: 15rem;
+      margin-top: 0.9rem;
+    }
+
+    .editor_ui {
+      width: 21.5rem;
+      margin-bottom: -2.5rem;
+    }
+
+    .happy_chat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 5rem;
+      overflow: hidden;
+    }
+
+    .happy_chat img {
+      width: 100%;
+    }
+
+    #first_page_girl {
+      background: url("images/fisrtbg.jpg") no-repeat;
+      background-size: cover;
+      width: 100%;
+      height: 11rem;
+      background-attachment: fixed;
+    }
+
+
+
+    .second_page_phone {
+      position: relative;
+      width: 100%;
+    }
+
+    #second_page_phone {
+      margin-top: -3.5rem;
+
+      margin-left: 1.4rem;
+    }
+
+    #second_page_pad {
+      background: url("images/avd.jpg") no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      width: 100%;
+      height: 11rem;
+      overflow: hidden;
+    }
+
+    .second_page {
+      width: 100%;
+      height: 30rem;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+
+<body>
+<div id="home_page">
+  <div id="first_page_bg">
+    <div class="first_page_header">
+      <img src="images/imlogo_b.png" class="header_tim_logo">
+      <a href="#" class="header_button">
+        首页
+      </a>
+      <a href="#" class="header_button">
+        下载
+      </a>
+      <a href="#" class="header_button">
+        动态
+      </a>
+
+      <div class="header_online_number">
+        <div id="header_online_number">
+          <div>
+            <a href="#">QQ会员</a>
+            <a href="#">QQ安全</a>
+            <a href="#">登录</a>
+          </div>
+          <div>
+            当前在线人数：227，763，015
+          </div>
+        </div>
+      </div>
+      <div class="register_button_container">
+        <a href="#" class="register_button">
+          注册
+        </a>
+      </div>
+    </div>
+    <div class="first_page_body">
+      <img src="images/logo.png" class="tim_logo">
+      <a href="#" class="download_immediately">立即下载</a>
+      <img src="images/icon.png" class="first_page_introduce"/>
+      <img src="images/doc-j2.png" class="editor_ui"/>
+      <div class="happy_chat">
+        <img src="images/brand.png">
+      </div>
+    </div>
+
+    <div id="first_page_girl"></div>
+
+  </div>
+  <div class="second_page">
+
+
+    <div class="second_page_phone">
+      <img src="images/pic1.png" id="second_page_phone">
+    </div>
+    <div id="second_page_pad"></div>
+  </div>
+</div>
+
+
+
+<script>
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+  <link rel="stylesheet" href="../js/flexible/flexible.css">
+  <link rel="stylesheet" href="game.css">
+  <script src="../js/flexible/flexible.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mescroll.js@1.4.1/mescroll.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mescroll.js@1.4.1/mescroll.min.js" charset="utf-8"></script>
+  <!--<script src="js/jquery/jquery.js"></script>-->
+  <script src="../js/zepto/common.js"></script>
+  <script src="../js/zepto/zepto.min.js"></script>
+  <script src="../js/velocity/velocity.min.js"></script>
+  <script src="../js/velocity/velocity.ui.min.js"></script>
+  <script src="../js/util/uiutils.js"></script>
+  <script src="playerPlaneFire.js"></script>
+  <script src="againstPlane.js"></script>
+  <script src="../js/vconsole/vconsole.min.js"></script>
+  <style>
+    div {
+      width: 700px;
+      height: 700px;
+      transition-property: all;;
+      transition-duration: 2000ms;
+      background:-webkit-gradient(linear,50 50,100 100,from(#0F0),to(#000))
+    }
+  </style>
+</head>
+<body>
+    <div>
+       <img src="../img/bomb.gif" class="a">
+    </div>
+<script>
+  var deg = 0
+  function rotate() {
+    requestAnimationFrame(function () {
+      $(".a").css({
+        transform:"rotate("+(++deg)+"deg)"
+      })
+      rotate()
+    })
+  }
+  rotate()
+</script>
+</body>
+</html>

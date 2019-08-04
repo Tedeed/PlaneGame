@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="fib.js"></script>
+</head>
+<body>
+<input type="button" value="主线程计算" id="btn1">
+<input type="button" value="子线程计算" id="btn2">
+<input type="button" value="中断" id="btn3">
+<input type="button" value="测试" id="btn4">
+<script>
+  function fib(n){
+    if(n==1||n==2){
+      return 1;
+    }else{
+      return fib(n-1)+fib(n-2);
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var oBtn1 = document.getElementById('btn1');
+    var oBtn2 = document.getElementById('btn2');
+    var oBtn3 = document.getElementById('btn3');
+    var oBtn4 = document.getElementById('btn4');
+    var oW;
+    oBtn1.onclick = function(){
+      alert(fib(48));
+    };
+    oBtn2.onclick = function(){
+      oW = new Worker('fib.js');
+      oW.postMessage(48);
+      oW.onmessage = function(ev){
+        alert(ev.data);
+      };
+    };
+    oBtn3.onclick = function(){
+      oW.terminate();
+    };
+    oBtn4.onclick = function(){
+      alert('点击了');
+    };
+  },false);
+</script>
+</body>
+</html>
